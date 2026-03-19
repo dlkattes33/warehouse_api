@@ -24,7 +24,7 @@ pipeline {
                 sh '''
                     . venv/bin/activate
                     export PYTHONPATH=$PYTHONPATH:$(pwd)
-                    pytest -q
+                    pytest -q --junitxml=test-results.xml
                 '''
             }
         }

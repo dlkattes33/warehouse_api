@@ -24,7 +24,7 @@ pipeline {
                     pip install --upgrade pip
                     pip install -r requirements.txt
                     export PYTHONPATH=$WORKSPACE
-                    pytest -q --junitxml=warehouse_api-tests.xml
+                    pytest -q --rootdir=. --junitxml=warehouse_api-tests.xml
                 '''
             }
             post {
@@ -46,7 +46,7 @@ pipeline {
                         pip install --upgrade pip
                         pip install -r requirements.txt
                         export PYTHONPATH=$WORKSPACE
-                        pytest -q --junitxml=temp_service-tests.xml
+                        pytest -q --rootdir=. --junitxml=warehouse_api-tests.xml
                     '''
                 }
             }

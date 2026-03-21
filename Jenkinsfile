@@ -62,7 +62,7 @@ pipeline {
         ------------------------------*/
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose -f ${DOCKER_COMPOSE_FILE} build'
+                sh "docker compose -f ${DOCKER_COMPOSE_FILE} build"
             }
         }
 
@@ -71,7 +71,7 @@ pipeline {
         ------------------------------*/
         stage('Integration - Up') {
             steps {
-                sh 'docker compose -f ${DOCKER_COMPOSE_FILE} up -d'
+                sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d"
                 sh 'sleep 10'   // allow services to warm up
             }
         }
@@ -91,7 +91,7 @@ pipeline {
 
     post {
         always {
-            sh 'docker compose -f ${DOCKER_COMPOSE_FILE} down || true'
+            sh "docker compose -f ${DOCKER_COMPOSE_FILE} down || true"
         }
     }
 }

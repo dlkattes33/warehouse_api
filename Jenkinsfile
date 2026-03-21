@@ -45,8 +45,8 @@ pipeline {
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install -r requirements.txt
-                        export PYTHONPATH=$WORKSPACE
-                        pytest -q --rootdir=. --junitxml=warehouse_api-tests.xml
+                        export PYTHONPATH=$(pwd)
+                        pytest -q --rootdir=. --junitxml=temp_service-tests.xml
                     '''
                 }
             }

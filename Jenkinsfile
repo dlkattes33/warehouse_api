@@ -24,7 +24,7 @@ pipeline {
                     pip install --upgrade pip
                     pip install -r requirements.txt
                     export PYTHONPATH=$WORKSPACE
-                    pytest -q --rootdir=. --junitxml=warehouse_api-tests.xml
+                    pytest -q --maxfail=1 --disable-warnings --junitxml=warehouse_api-tests.xml .
                 '''
             }
             post {
@@ -46,7 +46,7 @@ pipeline {
                         pip install --upgrade pip
                         pip install -r requirements.txt
                         export PYTHONPATH=$(pwd)
-                        pytest -q --rootdir=. --junitxml=temp_service-tests.xml
+                        pytest -q --maxfail=1 --disable-warnings --junitxml=temp_service-tests.xml .
                     '''
                 }
             }

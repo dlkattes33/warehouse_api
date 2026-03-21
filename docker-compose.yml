@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  warehouse_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: warehouse_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - temperature_service
+    networks:
+      - coldnet
+
+  temperature_service:
+    build:
+      context: ./temperature_service
+      dockerfile: Dockerfile
+    container_name: temperature_service
+    ports:
+      - "8001:8001"
+    networks:
+      - coldnet
+
+networks:
+  coldnet:
+    driver: bridge

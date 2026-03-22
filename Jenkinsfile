@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = "docker-compose.yml".toString()
+        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     }
 
     stages {
@@ -13,12 +14,10 @@ pipeline {
             }
         }
 
-        /* -----------------------------
-           UNIT TESTS: warehouse_api
-        ------------------------------*/
         stage('Unit Tests - warehouse_api') {
             steps {
                 sh '''
+                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
@@ -34,13 +33,11 @@ pipeline {
             }
         }
 
-        /* -----------------------------
-           UNIT TESTS: temperature_service
-        ------------------------------*/
         stage('Unit Tests - temperature_service') {
             steps {
                 dir('temperature_service') {
                     sh '''
+                        export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install --upgrade pip
@@ -57,41 +54,43 @@ pipeline {
             }
         }
 
-        /* -----------------------------
-           BUILD DOCKER IMAGES
-        ------------------------------*/
         stage('Build Docker Images') {
             steps {
-                sh "docker compose -f docker-compose.yml build"
+                sh '''
+                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                    docker compose -f docker-compose.yml build
+                '''
             }
         }
 
-        /* -----------------------------
-           INTEGRATION: Bring up stack
-        ------------------------------*/
         stage('Integration - Up') {
             steps {
-                sh "docker compose -f docker-compose.yml up -d"
-                sh 'sleep 10'   // allow services to warm up
+                sh '''
+                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                    docker compose -f docker-compose.yml up -d
+                '''
+                sh 'sleep 10'
             }
         }
 
-        /* -----------------------------
-           INTEGRATION TESTS
-        ------------------------------*/
         stage('Integration Tests') {
             steps {
                 sh '''
+                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                     curl -f http://localhost:8000/ || exit 1
                     curl -f http://localhost:8001/temperatures/freezer || exit 1
                 '''
             }
         }
-    }
+
+    } // <-- this closes the stages block
 
     post {
         always {
-            sh "docker compose -f docker-compose.yml down || true"
+            sh '''
+                export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+                docker compose -f docker-compose.yml down || true
+            '''
         }
     }
 }

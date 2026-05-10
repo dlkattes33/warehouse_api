@@ -7,5 +7,5 @@ app = FastAPI(
     description="Mock API for inventory and shipment operations"
 )
 
-app.include_router(inventory.router, prefix="/inventory", tags=["Inventory"])
-app.include_router(shipment.router, prefix="/shipment", tags=["Shipment"])
+app.include_router(inventory, prefix="/inventory", tags=["Inventory"])
+app.include_router(shipment, prefix="/shipment", tags=["Shipment"])

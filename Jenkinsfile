@@ -8,12 +8,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
+        
         stage('Unit Tests - warehouse_api') {
             steps {
                 sh '''

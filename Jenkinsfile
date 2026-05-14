@@ -62,7 +62,7 @@ pipeline {
             steps {
                 sh '''
                     export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-                    docker compose -f docker-compose.yml up -d
+                    docker compose -f docker-compose.yml up -d --force-recreate
                 '''
                 sh 'sleep 10'
             }

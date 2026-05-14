@@ -58,6 +58,16 @@ pipeline {
             }
         }
 
+        stage('Cleanup Containers') {
+            steps {
+                sh '''
+                    docker rm -f temperature_service || true
+                    docker rm -f warehouse_api || true
+                    docker compose -f docker-compose.yml down || true
+            '''
+            }
+        }
+
         stage('Integration - Up') {
             steps {
                 sh '''

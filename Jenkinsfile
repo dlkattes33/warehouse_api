@@ -82,8 +82,8 @@ pipeline {
             steps {
                 sh '''
                     export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-                    curl -f http://warehouse_api:8000/ || exit 1
-                    curl -f http://temperature_service:8001/temperatures/freezer || exit 1
+                    docker exec warehouse_api curl -f http://localhost:8000/ || exit 1
+                    docker exec temperature_service curl -f http://localhost:8001/temperatures/freezer || exit 1
                 '''
             }
         }

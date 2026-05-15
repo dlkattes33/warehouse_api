@@ -81,9 +81,10 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
-                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-                    docker exec warehouse_api curl -f http://localhost:8000/ || exit 1
-                    docker exec temperature_service curl -f http://localhost:8001/temperatures/freezer || exit 1
+                    pytest tests_integration \
+                        --maxfail=1 \
+                        --disable-warnings \
+                        --junitxml=integration-tests.xml
                 '''
             }
         }

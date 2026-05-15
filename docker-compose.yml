@@ -7,10 +7,16 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - temperature_service
+      temperature_service:
+          condition: service_healthy
     networks:
       - coldnet
-
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      
   temperature_service:
     build:
       context: ./temperature_service
@@ -20,6 +26,11 @@ services:
       - "8001:8001"
     networks:
       - coldnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/temperatures/freezer"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 networks:
   coldnet:

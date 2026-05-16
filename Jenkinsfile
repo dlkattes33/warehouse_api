@@ -69,6 +69,24 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Wait for temperature_service') {
+            steps {
+                sh '''
+                    echo "Waiting for temperature_service on port 8001..."
+                    for i in {1..20}; do
+                        if curl -s http://localhost:8001/temperatures/freezer > /dev/null; then
+                            echo "temperature_service is up!"
+                            exit 0
+                        fi
+                        echo "Not ready yet... retrying"
+                        sleep 1
+                    done
+                    echo "temperature_service did not become ready in time"
+                    exit 1
+                '''
+            }
+        }
 
         stage('Integration Tests') {
             steps {

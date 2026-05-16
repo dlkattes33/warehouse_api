@@ -1,3 +1,4 @@
+# app/services/inventory_service.py 
 inventory_db = {}
 
 def update_inventory(payload):

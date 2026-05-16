@@ -73,6 +73,7 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
+                    .venv/bin/activate
                     pytest tests_integration \
                         --maxfail=1 \
                         --disable-warnings \

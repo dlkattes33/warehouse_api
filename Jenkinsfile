@@ -12,21 +12,14 @@ pipeline {
         stage('Unit Tests - warehouse_api') {
             steps {
                 sh '''
-                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                     python3 -m venv venv
                     . venv/bin/activate
-                    pip install --upgrade pip
                     pip install -r requirements.txt
-                    export PYTHONPATH=$WORKSPACE
-                    pytest -q --maxfail=1 --disable-warnings --junitxml=warehouse_api-tests.xml .
-                '''
-            }
-            post {
-                always {
-                    junit 'warehouse_api-tests.xml'
-                }
+                    pytest warehouse_api/tests --junitxml=warehouse_api-tests.xml
+            '''
             }
         }
+
 
         stage('Unit Tests - temperature_service') {
             steps {
@@ -38,8 +31,7 @@ pipeline {
                         pip install --upgrade pip
                         pip install -r requirements.txt
                         export PYTHONPATH=$(pwd)
-                        pytest -q --maxfail=1 --disable-warnings --junitxml=temp_service-tests.xml .
-                    '''
+                        '''
                 }
             }
             post {
@@ -71,12 +63,11 @@ pipeline {
         stage('Integration - Up') {
             steps {
                 sh '''
-                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-                    docker compose -f docker-compose.yml up -d --force-recreate
-                '''
-                sh 'docker compose -f docker-compose.yml ps'
+                    docker compose -f docker-compose.yml up -d --build
+            '''
             }
         }
+
 
         stage('Integration Tests') {
             steps {

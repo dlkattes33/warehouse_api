@@ -15,7 +15,7 @@ pipeline {
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt
-                    pytest warehouse_api/tests --junitxml=warehouse_api-tests.xml
+                    pytest tests --junitxml=warehouse_api-tests.xml
             '''
             post {
                 always {

@@ -66,7 +66,6 @@ pipeline {
             steps {
                 sh '''
                     docker compose -f docker-compose.yml up -d --build
-                    docker compose -f docker-compose.yml run --rm integration_tests
                 '''
             }
         }
@@ -98,6 +97,7 @@ pipeline {
                         --maxfail=1 \
                         --disable-warnings \
                         --junitxml=integration-tests.xml
+                        docker compose -f docker-compose.yml run --rm integration_tests
                 '''
             }
             post {

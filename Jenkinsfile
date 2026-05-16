@@ -73,6 +73,7 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
+                    python3 -m venv .venv                
                     .venv/bin/activate
                     pytest tests_integration \
                         --maxfail=1 \

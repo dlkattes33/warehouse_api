@@ -17,9 +17,13 @@ pipeline {
                     pip install -r requirements.txt
                     pytest warehouse_api/tests --junitxml=warehouse_api-tests.xml
             '''
+            post {
+                always {
+                    junit 'warehouse_api-tests.xml'
+                    }
+                }
             }
         }
-
 
         stage('Unit Tests - temperature_service') {
             steps {
@@ -31,6 +35,7 @@ pipeline {
                         pip install --upgrade pip
                         pip install -r requirements.txt
                         export PYTHONPATH=$(pwd)
+                        pytest tests --junitxml=temp_service-tests.xml
                         '''
                 }
             }
@@ -76,7 +81,11 @@ pipeline {
                         --maxfail=1 \
                         --disable-warnings \
                         --junitxml=integration-tests.xml
-                '''
+            post {
+                always {
+                    junit 'integration-tests.xml'
+                    }
+                }    '''
             }
         }
 

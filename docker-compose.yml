@@ -16,7 +16,19 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-      
+ 
+  integration_tests:
+  build:
+    context: .
+    dockerfile: Dockerfile.tests
+  depends_on:
+    temperature_service:
+      condition: service_healthy
+    warehouse_api:
+      condition: service_healthy
+  networks:
+    - coldnet
+    
   temperature_service:
     build:
       context: ./temperature_service

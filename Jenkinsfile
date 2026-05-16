@@ -75,7 +75,7 @@ pipeline {
                 sh '''
                     echo "Waiting for temperature_service on port 8001..."
                     for i in {1..20}; do
-                        if curl -s http://temperature_service:8001/temperatures/freezer > /dev/null; then
+                        if curl -s http://localhost:8001/temperatures/freezer > /dev/null; then
                             echo "temperature_service is up!"
                             exit 0
                         fi

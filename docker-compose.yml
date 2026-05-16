@@ -27,7 +27,7 @@ services:
     networks:
       - coldnet
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/temperatures/freezer"]
+      test: ["CMD", "curl", "-f", "http://temperature_service:8001/temperatures/freezer"]
       interval: 5s
       timeout: 3s
       retries: 5

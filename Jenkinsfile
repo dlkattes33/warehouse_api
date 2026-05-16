@@ -8,7 +8,6 @@ pipeline {
 
     stages {
 
-        
         stage('Unit Tests - warehouse_api') {
             steps {
                 sh '''
@@ -16,11 +15,11 @@ pipeline {
                     . venv/bin/activate
                     pip install -r requirements.txt
                     pytest tests --junitxml=warehouse_api-tests.xml
-            '''
+                '''
+            }
             post {
                 always {
                     junit 'warehouse_api-tests.xml'
-                    }
                 }
             }
         }
@@ -29,14 +28,13 @@ pipeline {
             steps {
                 dir('temperature_service') {
                     sh '''
-                        export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install -r requirements.txt
                         export PYTHONPATH=$(pwd)
                         pytest tests --junitxml=temp_service-tests.xml
-                        '''
+                    '''
                 }
             }
             post {
@@ -49,7 +47,6 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 sh '''
-                    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                     docker compose -f docker-compose.yml build
                 '''
             }
@@ -61,7 +58,7 @@ pipeline {
                     docker rm -f temperature_service || true
                     docker rm -f warehouse_api || true
                     docker compose -f docker-compose.yml down || true
-            '''
+                '''
             }
         }
 
@@ -69,10 +66,9 @@ pipeline {
             steps {
                 sh '''
                     docker compose -f docker-compose.yml up -d --build
-            '''
+                '''
             }
         }
-
 
         stage('Integration Tests') {
             steps {
@@ -90,15 +86,13 @@ pipeline {
             }
         }
 
-    } // <-- this closes the stages block
+    }   // <-- THIS closes the stages block
 
     post {
         always {
             sh '''
-                export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
                 docker compose -f docker-compose.yml down || true
             '''
-            }
         }
-    
-} 
+    }
+}

@@ -74,7 +74,7 @@ pipeline {
             steps {
                 sh '''
                     python3 -m venv venv                
-                    .venv/bin/activate
+                    . venv/bin/activate
                     pytest tests_integration \
                         --maxfail=1 \
                         --disable-warnings \

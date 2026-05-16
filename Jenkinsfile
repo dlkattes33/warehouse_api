@@ -81,13 +81,14 @@ pipeline {
                         --maxfail=1 \
                         --disable-warnings \
                         --junitxml=integration-tests.xml
-           '''
+                '''
             }
             post {
                 always {
                     junit 'integration-tests.xml'
                 }
             }
+        }
 
     } // <-- this closes the stages block
 

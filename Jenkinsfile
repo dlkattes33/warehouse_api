@@ -79,8 +79,8 @@ pipeline {
                     docker compose -f docker-compose.yml run --rm integration_tests
                 '''
             }
-        }
-    }
+        } # integration tests
+    } # stages
 
     post {
         always {

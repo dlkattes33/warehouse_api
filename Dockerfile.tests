@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system deps for curl (if tests use it)
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy only what tests need
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire repo (so tests can import modules)
+COPY . .
+
+# Default command: run integration tests
+CMD ["pytest", "tests_integration", "--maxfail=1", "--disable-warnings", "--junitxml=/app/integration-tests.xml"]

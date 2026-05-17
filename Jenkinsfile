@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_COMPOSE_FILE = "docker-compose.yml"
+        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     }
 
     stages {
@@ -16,7 +17,11 @@ pipeline {
                     pytest tests --junitxml=warehouse_api-tests.xml
                 '''
             }
-            post { always { junit 'warehouse_api-tests.xml' } }
+            post {
+                always {
+                    junit 'warehouse_api-tests.xml'
+                }
+            }
         }
 
         stage('Unit Tests - temperature_service') {
@@ -25,17 +30,25 @@ pipeline {
                     sh '''
                         python3 -m venv venv
                         . venv/bin/activate
+                        pip install --upgrade pip
                         pip install -r requirements.txt
+                        export PYTHONPATH=$(pwd)
                         pytest tests --junitxml=temp_service-tests.xml
                     '''
                 }
             }
-            post { always { junit 'temperature_service/temp_service-tests.xml' } }
+            post {
+                always {
+                    junit 'temperature_service/temp_service-tests.xml'
+                }
+            }
         }
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose -f docker-compose.yml build'
+                sh '''
+                    docker compose -f docker-compose.yml build
+                '''
             }
         }
 
@@ -51,24 +64,8 @@ pipeline {
 
         stage('Integration - Up') {
             steps {
-                sh 'docker compose -f docker-compose.yml up -d'
-            }
-        }
-
-        stage('Wait for temperature_service') {
-            steps {
                 sh '''
-                    echo "Waiting for temperature_service on localhost:8001..."
-                    for i in {1..20}; do
-                        if curl -s http://temperature_service:8001/temperatures/freezer > /dev/null; then
-                            echo "temperature_service is UP!"
-                            exit 0
-                        fi
-                        echo "Not ready yet... retrying"
-                        sleep 1
-                    done
-                    echo "temperature_service did not become ready in time"
-                    exit 1
+                    docker compose -f docker-compose.yml up -d
                 '''
             }
         }
@@ -77,20 +74,22 @@ pipeline {
             steps {
                 sh '''
                     docker compose -f docker-compose.yml run --rm integration_tests
-            '''
-       }
-         post {
-             always {
-                 junit 'integration-tests.xml'
-                 }
-             }
-         }
+                '''
+            }
+            post {
+                always {
+                    junit 'integration-tests.xml'
+                }
+            }
+        }
 
     }
 
     post {
         always {
-            sh 'docker compose -f docker-compose.yml down || true'
+            sh '''
+                docker compose -f docker-compose.yml down || true
+            '''
         }
     }
 }

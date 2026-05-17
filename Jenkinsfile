@@ -77,10 +77,16 @@ pipeline {
             steps {
                 sh '''
                     docker compose -f docker-compose.yml run --rm integration_tests
-                '''
-            }
-        } # integration tests
-    } # stages
+            '''
+       }
+         post {
+             always {
+                 junit 'integration-tests.xml'
+                 }
+             }
+         }
+
+    }
 
     post {
         always {

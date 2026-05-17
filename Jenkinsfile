@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = "docker-compose.yml".toString()
-        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        DOCKER_COMPOSE_FILE = "docker-compose.yml"
     }
 
     stages {
@@ -17,11 +16,7 @@ pipeline {
                     pytest tests --junitxml=warehouse_api-tests.xml
                 '''
             }
-            post {
-                always {
-                    junit 'warehouse_api-tests.xml'
-                }
-            }
+            post { always { junit 'warehouse_api-tests.xml' } }
         }
 
         stage('Unit Tests - temperature_service') {
@@ -30,25 +25,17 @@ pipeline {
                     sh '''
                         python3 -m venv venv
                         . venv/bin/activate
-                        pip install --upgrade pip
                         pip install -r requirements.txt
-                        export PYTHONPATH=$(pwd)
                         pytest tests --junitxml=temp_service-tests.xml
                     '''
                 }
             }
-            post {
-                always {
-                    junit 'temperature_service/temp_service-tests.xml'
-                }
-            }
+            post { always { junit 'temperature_service/temp_service-tests.xml' } }
         }
 
         stage('Build Docker Images') {
             steps {
-                sh '''
-                    docker compose -f docker-compose.yml build
-                '''
+                sh 'docker compose -f docker-compose.yml build'
             }
         }
 
@@ -64,19 +51,17 @@ pipeline {
 
         stage('Integration - Up') {
             steps {
-                sh '''
-                    docker compose -f docker-compose.yml up -d --build
-                '''
+                sh 'docker compose -f docker-compose.yml up -d'
             }
         }
-        
+
         stage('Wait for temperature_service') {
             steps {
                 sh '''
-                    echo "Waiting for temperature_service on port 8001..."
+                    echo "Waiting for temperature_service on localhost:8001..."
                     for i in {1..20}; do
                         if curl -s http://localhost:8001/temperatures/freezer > /dev/null; then
-                            echo "temperature_service is up!"
+                            echo "temperature_service is UP!"
                             exit 0
                         fi
                         echo "Not ready yet... retrying"
@@ -91,29 +76,15 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
-                    python3 -m venv venv                
-                    . venv/bin/activate
-                    pytest tests_integration \
-                        --maxfail=1 \
-                        --disable-warnings \
-                        --junitxml=integration-tests.xml
-                        docker compose -f docker-compose.yml run --rm integration_tests
+                    docker compose -f docker-compose.yml run --rm integration_tests
                 '''
             }
-            post {
-                always {
-                    junit 'integration-tests.xml'
-                }
-            }
         }
-
-    }   // <-- THIS closes the stages block
+    }
 
     post {
         always {
-            sh '''
-                docker compose -f docker-compose.yml down || true
-            '''
+            sh 'docker compose -f docker-compose.yml down || true'
         }
     }
 }

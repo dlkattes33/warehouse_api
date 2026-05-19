@@ -89,8 +89,8 @@ pipeline {
         always {
             sh '''
                 docker compose -f docker-compose.yml down || true
-                junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
             '''
+            junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
         }
     }
 }

@@ -19,8 +19,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'warehouse_api-tests.xml'
-                    junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
+                    junit testResults: 'warehouse_api-tests.xml', skipMarkingBuildUnstable: true
                 }
             }
         }
@@ -40,9 +39,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'temperature_service/temp_service-tests.xml'
-                    junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
-                }
+                    junit testResults: 'temperature_service/temp_service-tests.xml', skipMarkingBuildUnstable: true                }
             }
         }
 
@@ -80,8 +77,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'integration-tests.xml'
-                    junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
+                    junit testResults: 'integration-tests.xml', skipMarkingBuildUnstable: true
                 }
             }
         }
@@ -93,7 +89,7 @@ pipeline {
             sh '''
                 docker compose -f docker-compose.yml down || true
             '''
-            junit allowEmptyResults: true, testResults: '**/*.xml', healthScaleFactor: 0.0
+            junit testResults: '**/*.xml', skipMarkingBuildUnstable: true
         }
     }
 }

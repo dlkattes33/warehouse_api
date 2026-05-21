@@ -11,3 +11,7 @@ def update_inventory_endpoint(payload: InventoryUpdateRequest):
 @router.get("/{item_id}", response_model=InventoryItem)
 def get_inventory_endpoint(item_id: str):
     return get_inventory_item(item_id)
+
+@router.post("/items", response_model=InventoryItem)
+def create_inventory_item(payload: InventoryItem):
+    return payload

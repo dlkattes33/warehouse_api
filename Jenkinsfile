@@ -33,7 +33,6 @@ pipeline {
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install -r requirements.txt
-                        export PYTHONPATH=$PYTHONPATH:$(pwd)
                         pytest tests --junitxml=temp_service-tests.xml
                     '''
                 }

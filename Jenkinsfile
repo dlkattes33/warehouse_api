@@ -14,6 +14,7 @@ pipeline {
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install -r requirements.txt
+                    export PYTHONPATH=$PYTHONPATH:$(pwd)/tests
                     pytest tests --junitxml=warehouse_api-tests.xml
                 '''
             }
@@ -32,7 +33,7 @@ pipeline {
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install -r requirements.txt
-                        export PYTHONPATH=$(pwd)
+                        export PYTHONPATH=$PYTHONPATH:$(pwd)
                         pytest tests --junitxml=temp_service-tests.xml
                     '''
                 }

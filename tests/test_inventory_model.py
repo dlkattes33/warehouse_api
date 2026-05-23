@@ -3,9 +3,11 @@ from app.models.inventory import InventoryItem, InventoryUpdateRequest
 
 
 def test_inventory_item_valid():
-    item = InventoryItem(item_id="ABC123", quantity=10)
+    item = InventoryItem(item_id="ABC123", name="item_name", quantity=10, location="freezer")
     assert item.item_id == "ABC123"
+    assert item.name == "item_name"  # default value for name
     assert item.quantity == 10
+    assert item.location == "freezer"  # default value for location
 
 
 def test_inventory_update_request_valid():

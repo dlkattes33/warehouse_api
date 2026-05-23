@@ -18,7 +18,7 @@ def test_inventory_update_request_valid():
 
 def test_inventory_item_invalid_quantity_type():
     with pytest.raises(Exception):
-        InventoryItem(item_id="BAD1", quantity="not-a-number")
+        InventoryItem(item_id="BAD1", name="bad_item", quantity="not-a-number", location="freezer")
 
 
 def test_inventory_update_request_missing_field():
@@ -28,5 +28,5 @@ def test_inventory_update_request_missing_field():
 
 def test_inventory_item_negative_quantity_allowed():
     # If negative quantities are NOT allowed, change this test accordingly.
-    item = InventoryItem(item_id="NEG1", quantity=-5)
+    item = InventoryItem(item_id="NEG1", name="negative_item", quantity=-5, location="freezer")
     assert item.quantity == -5

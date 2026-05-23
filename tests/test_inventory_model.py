@@ -11,7 +11,7 @@ def test_inventory_item_valid():
 
 
 def test_inventory_update_request_valid():
-    update = InventoryUpdateRequest(item_id="XYZ999", quantity=5)
+    update = InventoryUpdateRequest(item_id="XYZ999", name="updated_item", quantity=5, location="refrigerator")
     assert update.item_id == "XYZ999"
     assert update.quantity == 5
 
@@ -23,7 +23,7 @@ def test_inventory_item_invalid_quantity_type():
 
 def test_inventory_update_request_missing_field():
     with pytest.raises(Exception):
-        InventoryUpdateRequest(quantity=10)  # missing item_id
+        InventoryUpdateRequest(quantity=10)  # missing item_id, name, and location.
 
 
 def test_inventory_item_negative_quantity_allowed():

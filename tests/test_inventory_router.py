@@ -11,12 +11,17 @@ def test_get_inventory_item():
 
     data = response.json()
     assert "item_id" in data
+    assert "name" in data
     assert "quantity" in data
+    assert "location" in data
     assert data["item_id"] == "A1"
+    assert data["name"] == "item_name"
+    assert data["quantity"] == 10
+    assert data["location"] == "freezer"
 
 
 def test_update_inventory_item():
-    payload = {"item_id": "A1", "quantity": 50}
+    payload = {"item_id": "A1", "name": "updated_item", "quantity": 50, "location": "refrigerator"}
 
     response = client.post("/inventory/update", json=payload)
     assert response.status_code == 200
@@ -24,6 +29,8 @@ def test_update_inventory_item():
     updated = response.json()
     assert updated["item_id"] == "A1"
     assert updated["quantity"] == 50
+    assert updated["name"] == "updated_item"
+    assert updated["location"] == "refrigerator"
 
     # Verify the update persisted
     check = client.get("/inventory/A1")

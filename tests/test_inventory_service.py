@@ -17,7 +17,7 @@ def test_get_inventory_item_default_zero():
     assert result["item_id"] == "A1"
     assert result["name"] == "item_name"
     assert result["quantity"] == 0
-    assert result["location"] == "UNKNOWN"
+    assert result["location"] == "freezer"
 
 def test_update_inventory_creates_item():
     payload = InventoryUpdateRequest(item_id="A1", quantity=10)

@@ -14,7 +14,7 @@ def get_inventory_endpoint(item_id: str):
 
 @router.post("/items", response_model=InventoryItem)
 def create_inventory_item(payload: InventoryCreateRequest):
-    # generat an ID (mock)
+    # generate an ID (mock)
     item_id = f"ITEM-{len(inventory_db) + 1}"
     
     # Store the item in the inventory_db

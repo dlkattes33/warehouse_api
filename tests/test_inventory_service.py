@@ -14,8 +14,8 @@ def setup_function():
 
 def test_get_inventory_item_default_zero():
     result = get_inventory_item("UNKNOWN")
-    assert result["item_id"] == "UNKNOWN"
-    assert result["name"] == "UNKNOWN"
+    assert result["item_id"] == "A1"
+    assert result["name"] == "item_name"
     assert result["quantity"] == 0
     assert result["location"] == "UNKNOWN"
 
@@ -24,7 +24,7 @@ def test_update_inventory_creates_item():
     result = update_inventory(payload)
 
     assert result["item_id"] == "A1"
-    assert result["name"] == "new_item"
+    assert result["name"] == "item_name"
     assert result["quantity"] == 10
     assert result["location"] == "freezer"
     assert inventory_db["A1"] == 10

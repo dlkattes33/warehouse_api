@@ -20,7 +20,7 @@ def test_get_inventory_item_default_zero():
     assert result["location"] == "UNKNOWN"
 
 def test_update_inventory_creates_item():
-    payload = InventoryUpdateRequest(item_id="A1", quantity=10)
+    payload = InventoryUpdateRequest(item_id="A1", name="updated_name", quantity=10, location="refrigerator")
     result = update_inventory(payload)
 
     assert result["item_id"] == "A1"

@@ -14,8 +14,8 @@ def setup_function():
 
 def test_get_inventory_item_default_zero():
     result = get_inventory_item("UNKNOWN")
-    assert result["item_id"] == "A1"
-    assert result["name"] == "item_name"
+    assert result["item_id"] == "UNKNOWN"
+    assert result["name"] == "UNKNOWN"
     assert result["quantity"] == 0
     assert result["location"] == "UNKNOWN"
 

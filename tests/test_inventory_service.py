@@ -20,14 +20,14 @@ def test_get_inventory_item_default_zero():
     assert result["location"] == "UNKNOWN"
 
 def test_update_inventory_creates_item():
-    payload = InventoryUpdateRequest(item_id="A1", name="updated_name", quantity=10, location="refrigerator")
+    payload = InventoryUpdateRequest(item_id="A1", name="item_name", quantity=10, location="freezer")
     result = update_inventory(payload)
 
     assert result["item_id"] == "A1"
     assert result["name"] == "item_name"
     assert result["quantity"] == 10
     assert result["location"] == "freezer"
-    assert inventory_db["A1"] == 10
+    assert inventory_db["A1"]["quantity"] == 10
 
 
 def test_update_inventory_overwrites_existing_item():
@@ -42,7 +42,7 @@ def test_update_inventory_overwrites_existing_item():
     assert result["quantity"] == 99
     assert result["name"] == "updated_item"
     assert result["location"] == "warehouse"
-    assert inventory_db["A1"] == 99
+    assert inventory_db["A1"]["quantity"] == 99
 
 
 def test_get_inventory_item_after_update():
@@ -61,6 +61,6 @@ def test_update_inventory_negative_quantity():
     result = update_inventory(payload)
 
     assert result["quantity"] == -7
-    assert inventory_db["NEG"] == -7
+    assert inventory_db["NEG"]["quantity"] == -7
     assert result["name"] == "negative_item"
     assert result["location"] == "freezer"

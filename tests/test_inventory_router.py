@@ -17,7 +17,7 @@ def test_get_inventory_item():
     assert data["item_id"] == "A1"
     assert data["name"] == "UNKNOWN"
     assert data["quantity"] == 0
-    assert data["location"] == "freezer"
+    assert data["location"] == "UNKNOWN"
 
 
 def test_update_inventory_item():

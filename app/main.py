@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.routers import inventory, shipment, auth
+from app.routers.temperature import router as temperature_router
 
 app = FastAPI(
     title="Cold Storage Warehouse API",
@@ -13,3 +14,4 @@ def health():
 app.include_router(inventory, prefix="/inventory", tags=["Inventory"])
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(shipment, prefix="/shipment", tags=["Shipment"])
+app.include_router(temperature_router, prefix="/temperatures", tags=["Temperature"])

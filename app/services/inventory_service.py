@@ -10,3 +10,19 @@ def get_inventory_item(item_id):
     if not item:
         return {"item_id": item_id, "name": "UNKNOWN", "quantity": 0, "location": "UNKNOWN"}
     return {"item_id": item_id, "name": item["name"], "quantity": item["quantity"], "location": item["location"]}
+
+def create_inventory_item(item_id, payload):
+    inventory_db[item_id] = {
+        "name": payload.name,
+        "quantity": payload.quantity,
+        "location": payload.location
+    }
+    return {
+        "item_id": item_id,
+        "name": payload.name,
+        "quantity": payload.quantity,
+        "location": payload.location
+    }
+
+def get_inventory_db():
+    return inventory_db

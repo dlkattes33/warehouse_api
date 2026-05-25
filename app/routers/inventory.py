@@ -21,7 +21,21 @@ def update_inventory_endpoint(payload: InventoryUpdateRequest):
 def get_inventory_endpoint(item_id: str):
     return get_inventory_item(item_id)
 
+@router.get("/items", response_model=list[InventoryItem])
+def list_inventory_items():
+    db = get_inventory_db()
+    items = []
+    for item_id, data in db.items():
+        items.append({
+            "item_id": item_id,
+            "name": data["name"],
+            "quantity": data["quantity"],
+            "location": data["location"]
+        })
+    return items
+
 @router.post("/items", response_model=InventoryItem)
 def create_inventory_endpoint(payload: InventoryCreateRequest):
     item_id = f"ITEM-{len(get_inventory_db()) + 1}"
     return create_inventory_item(item_id, payload)
+

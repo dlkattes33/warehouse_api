@@ -13,3 +13,7 @@ app.include_router(temperature_router, prefix="/temperatures", tags=["Temperatur
 @app.on_event("startup")
 async def start_scheduler():
     asyncio.create_task(temperature_scheduler())
+
+@app.get("/")
+def health():
+    return {"status": "ok"}

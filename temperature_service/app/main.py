@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(temperature_router)
+app.include_router(temperature_router, prefix="/temperatures", tags=["Temperature"])
 
 @app.on_event("startup")
 async def start_scheduler():

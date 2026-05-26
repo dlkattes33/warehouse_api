@@ -5,7 +5,7 @@ router = APIRouter()
 
 TEMPERATURE_SERVICE_URL = "http://temperature_service:8001"
 
-@router.get("/temperatures/{zone_id}")
+@router.get("/{zone_id}")
 async def get_temperature(zone_id: str):
     async with httpx.AsyncClient() as client:
         try:

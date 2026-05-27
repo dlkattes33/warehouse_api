@@ -1,3 +1,4 @@
+name: warehouse_api_pipeline
 services:
   warehouse_api:
     build:

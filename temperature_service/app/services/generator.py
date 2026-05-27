@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from app.models.temperature import TemperatureReading
+from app.models.temperature_model import TemperatureReading
 
 def generate_temperature(zone_id: str) -> TemperatureReading:
     return TemperatureReading(

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 import httpx
+print("🔥 GATEWAY ROUTER LOADED 🔥")
 
 router = APIRouter()
 

@@ -19,5 +19,6 @@ async def get_temperature(zone_id: str):
                 "zone": raw["zone_id"]
             }    
         
-        except httpx.HTTPError:
+        except httpx.HTTPError as e:
+            print("TEMP SERVICE ERROR:", repr(e))
             raise HTTPException(status_code=502, detail="Temperature service unavailable")

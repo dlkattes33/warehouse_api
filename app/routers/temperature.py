@@ -1,5 +1,3 @@
-from curses import raw
-
 from fastapi import APIRouter, HTTPException
 import httpx
 
@@ -13,8 +11,8 @@ async def get_temperature(zone_id: str):
         try:
             resp = await client.get(f"{TEMPERATURE_SERVICE_URL}/{zone_id}")
             resp.raise_for_status()
+            
             raw =  resp.json()
-
 
             return {
                 "temperature": raw["value"],

@@ -1,6 +1,9 @@
 from fastapi import APIRouter, HTTPException
 import httpx
-print("🔥 GATEWAY ROUTER LOADED 🔥")
+import sys
+
+print("🔥 GATEWAY ROUTER LOADED 🔥", file=sys.stderr, flush=True)
+
 
 router = APIRouter()
 
@@ -21,5 +24,6 @@ async def get_temperature(zone_id: str):
             }    
         
         except httpx.HTTPError as e:
-            print("TEMP SERVICE ERROR:", repr(e))
+            print("TEMP SERVICE ERROR:", repr(e), file=sys.stderr, flush=True)
+
             raise HTTPException(status_code=502, detail="Temperature service unavailable")

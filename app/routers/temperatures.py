@@ -7,7 +7,7 @@ print("🔥 GATEWAY ROUTER LOADED 🔥", file=sys.stderr, flush=True)
 
 router = APIRouter()
 
-TEMPERATURE_SERVICE_URL = "http://temperature_service:8001"
+TEMPERATURE_SERVICE_URL = "http://temperature_service:8001/temperatures"
 
 @router.get("/{zone_id}")
 async def get_temperature(zone_id: str):

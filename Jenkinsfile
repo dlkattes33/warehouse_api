@@ -20,7 +20,8 @@ pipeline {
             }
             post {
                 always {
-                    junit testResults: 'warehouse_api-tests.xml', skipMarkingBuildUnstable: true
+                    junit 'warehouse_api-tests.xml'
+                    archiveArtifacts artifacts: 'warehouse_api-tests.xml', fingerprint: true
                 }
             }
         }
@@ -39,32 +40,24 @@ pipeline {
             }
             post {
                 always {
-                    junit testResults: 'temperature_service/temp_service-tests.xml', skipMarkingBuildUnstable: true                }
+                    junit 'temperature_service/temp_service-tests.xml'
+                    archiveArtifacts artifacts: 'temperature_service/temp_service-tests.xml', fingerprint: true
+                }
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                sh '''
-                    docker compose -f docker-compose.yml build
-                '''
+                sh 'docker compose -f docker-compose.yml build'
             }
         }
 
-        stage('Cleanup Containers') {
+        stage('Run Services') {
             steps {
                 sh '''
-                    docker rm -f temperature_service || true
-                    docker rm -f warehouse_api || true
-                    docker compose -f docker-compose.yml down || true
-                '''
-            }
-        }
-
-        stage('Integration - Up') {
-            steps {
-                sh '''
-                    docker compose -f docker-compose.yml up -d
+                    docker compose up -d
+                    sleep 5
+                    curl -f http://localhost:8000/health || exit 1
                 '''
             }
         }
@@ -72,24 +65,31 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
-                    docker compose -f docker-compose.yml run --rm integration_tests
+                    docker compose run --rm integration_tests
                 '''
             }
             post {
                 always {
-                    junit testResults: 'integration-tests.xml', skipMarkingBuildUnstable: true
+                    junit 'integration-tests.xml'
+                    archiveArtifacts artifacts: 'integration-tests.xml', fingerprint: true
                 }
             }
         }
 
+        stage('Cleanup Containers') {
+            steps {
+                sh '''
+                    docker compose down --remove-orphans || true
+                '''
+            }
+        }
     }
 
     post {
         always {
-            sh '''
-                docker compose -f docker-compose.yml down || true
-            '''
-            junit testResults: '**/*.xml', skipMarkingBuildUnstable: true
+            sh 'docker compose down || true'
+            junit '**/*.xml'
+            archiveArtifacts artifacts: '**/*.xml', fingerprint: true
         }
     }
 }

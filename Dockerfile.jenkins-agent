@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+# Install Docker CLI
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    apt-get clean
+
+# Install any test dependencies
+RUN pip install pytest requests
+
+# Jenkins agent dependencies
+RUN apt-get update && apt-get install -y git openssh-client

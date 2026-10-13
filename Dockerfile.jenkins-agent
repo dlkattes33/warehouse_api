@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 # Install Docker CLI + curl
 RUN apt-get update && \
-    apt-get install -y docker.io curl && \
+    apt-get install -y docker.io curl git && \
     apt-get clean
 
 # Install Docker Compose v2 manually

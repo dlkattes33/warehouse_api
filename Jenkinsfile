@@ -62,7 +62,7 @@ pipeline {
                 sh '''
                     docker compose up -d
                     sleep 5
-                    curl -f http://host.docker.internal:8000/health || exit 1
+                    curl -f http://host.docker.internal:8000/ || exit 1
                 '''
             }
         }

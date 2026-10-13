@@ -70,13 +70,13 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
-                    # Run tests WITHOUT --rm so we can copy the XML file
-                    docker compose run integration_tests
+                    # Run integration tests in detached mode and capture container ID
+                    CONTAINER_ID=$(docker compose run -d integration_tests)
 
-                    # Find the actual container name created by docker compose
-                    CONTAINER_ID=$(docker compose ps -q integration_tests)
+                    # Wait for tests to finish
+                    docker logs -f $CONTAINER_ID
 
-                    # Copy the XML file out of the container
+                    # Copy XML report out of the container
                     docker cp $CONTAINER_ID:/app/integration-tests.xml .
 
                     # Remove the container

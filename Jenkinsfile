@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker{
-            image 'warehouse-agent'
+            image 'dkattes/warehouse-agent:latest'
             args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
@@ -87,7 +87,7 @@ pipeline {
                     docker compose down --remove-orphans || true
                 '''
             }
-        }
+        }cd
     }
 
     post {

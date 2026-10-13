@@ -87,7 +87,7 @@ pipeline {
                     docker compose down --remove-orphans || true
                 '''
             }
-        }cd
+        }
     }
 
     post {

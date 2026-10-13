@@ -15,7 +15,7 @@ services:
     networks:
       - coldnet
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://warehouse_api:8000/"]
+      test: ["CMD", "curl", "-f", "http://host.docker.internal:8000/health"]
       interval: 5s
       timeout: 3s
       retries: 5

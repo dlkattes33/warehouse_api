@@ -70,10 +70,17 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
+                    # Run tests WITHOUT --rm so we can copy the XML file
                     docker compose run integration_tests
-                    docker cp $(docker ps -aqf "name=integration_tests"):/app/integration-tests.xml .
-                    docker rm -f $(docker ps -aqf "name=integration_tests")
 
+                    # Find the actual container name created by docker compose
+                    CONTAINER_ID=$(docker compose ps -q integration_tests)
+
+                    # Copy the XML file out of the container
+                    docker cp $CONTAINER_ID:/app/integration-tests.xml .
+
+                    # Remove the container
+                    docker rm -f $CONTAINER_ID
                 '''
             }
             post {

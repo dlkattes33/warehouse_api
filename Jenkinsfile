@@ -70,7 +70,10 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 sh '''
-                    docker compose run --rm integration_tests
+                    docker compose run integration_tests
+                    docker cp $(docker ps -aqf "name=integration_tests"):/app/integration-tests.xml .
+                    docker rm -f $(docker ps -aqf "name=integration_tests")
+
                 '''
             }
             post {

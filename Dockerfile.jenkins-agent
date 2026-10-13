@@ -5,6 +5,9 @@ RUN apt-get update && \
     apt-get install -y docker.io && \
     apt-get clean
 
+# Install docker-compose plugin
+RUN apt-get install -y docker-compose-plugin
+    
 # Install any test dependencies
 RUN pip install pytest requests
 

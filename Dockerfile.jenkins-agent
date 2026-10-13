@@ -1,5 +1,3 @@
-FROM python:3.11-slim
-
 # Install Docker CLI + curl
 RUN apt-get update && \
     apt-get install -y docker.io curl && \
@@ -13,9 +11,3 @@ RUN curl -SL https://github.com/docker/compose/releases/download/v2.29.2/docker-
 # Make "docker compose" work
 RUN mkdir -p /usr/libexec/docker/cli-plugins && \
     ln -s /usr/local/bin/docker-compose /usr/libexec/docker/cli-plugins/docker-compose
-
-# Install test dependencies
-RUN pip install pytest requests
-
-# Jenkins agent dependencies
-RUN apt-get update && apt-get install -y git openssh-client
